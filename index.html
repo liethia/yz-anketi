@@ -481,7 +481,6 @@
 <div class="container">
 
   <header class="site-header">
-    <div class="uni-badge">🎓 Marmara Üniversitesi</div>
     <h1>Kurumsal Yapay Zekâ Asistanlarında<br>Yanıt Davranışları Araştırması</h1>
     <p>Akademik araştırma · Gönüllülük esaslı · Yaklaşık 8–12 dakika</p>
   </header>
@@ -570,7 +569,7 @@ function shuffle(arr) {
   return a;
 }
 
-// Steps: 0=consent, 1=demografi, 2=ai_exp, 3=ai_literacy, 4=scenario_intro, 5=response0, 6=response1, 7=response2, 8=thankyou
+// Steps: 0=consent, 1=ai_exp, 2=ai_literacy, 3=scenario_intro, 4=response0, 5=response1, 6=response2, 7=demografi, 8=thankyou
 const TOTAL_STEPS = 8;
 
 function updateProgress(step) {
@@ -580,8 +579,8 @@ function updateProgress(step) {
   const pct = Math.round((step / (TOTAL_STEPS - 1)) * 100);
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressPct').textContent = pct + '%';
-  const labels = ['', 'Demografik Bilgiler', 'YZ Deneyimi', 'YZ Okuryazarlığı',
-    'Senaryo', 'Yanıt 1/3', 'Yanıt 2/3', 'Yanıt 3/3', 'Tamamlandı'];
+  const labels = ['', 'YZ Deneyimi', 'YZ Okuryazarlığı', 'Senaryo',
+    'Yanıt 1/3', 'Yanıt 2/3', 'Yanıt 3/3', 'Demografik Bilgiler', 'Tamamlandı'];
   document.getElementById('progressLabel').textContent = labels[step] || '';
 }
 
@@ -592,11 +591,11 @@ function render() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   if (state.step === 0) renderConsent(el);
-  else if (state.step === 1) renderDemografi(el);
-  else if (state.step === 2) renderAiExp(el);
-  else if (state.step === 3) renderAiLiteracy(el);
-  else if (state.step === 4) renderScenarioIntro(el);
-  else if (state.step >= 5 && state.step <= 7) renderResponse(el, state.step - 5);
+  else if (state.step === 1) renderAiExp(el);
+  else if (state.step === 2) renderAiLiteracy(el);
+  else if (state.step === 3) renderScenarioIntro(el);
+  else if (state.step >= 4 && state.step <= 6) renderResponse(el, state.step - 4);
+  else if (state.step === 7) renderDemografi(el);
   else if (state.step === 8) renderThankyou(el);
 }
 
@@ -609,9 +608,11 @@ function renderConsent(el) {
       <div class="card-label">Bilgilendirilmiş Onam</div>
       <h2>Araştırmaya Hoş Geldiniz</h2>
       <div class="consent-box">
-        <p>Bu araştırma, <strong>Marmara Üniversitesi</strong> bünyesinde yürütülen akademik bir çalışmadır. Araştırmanın amacı, kurumsal yapay zekâ asistanlarında farklı yanıt davranışlarının kullanıcı güveni ve kullanım niyeti üzerindeki etkisini incelemektir.</p>
+        <p>Bu anket çalışması, Marmara Üniversitesi Yönetim Bilişim Sistemleri (Almanca) Bölümü 4. sınıf öğrencisi İlayda Demirtaş tarafından, Dr. Öğr. Üyesi İlkim Ecem Emre Sözeri danışmanlığında yürütülen lisans bitirme projesi kapsamında gerçekleştirilmektedir.</p>
         <br>
-        <p>Katılımınız <strong>tamamen gönüllülük</strong> esasına dayanmaktadır. Yanıtlarınız anonim olarak işlenecek ve yalnızca bilimsel amaçlarla kullanılacaktır. Anketi istediğiniz zaman bırakabilirsiniz.</p>
+        <p><strong>Çalışmanın Amacı:</strong> Bu araştırma, kurumsal yapay zekâ asistanlarının farklı yanıt stratejilerinin — doğrudan yanıt, belirsizlik bildirimi ve insan uzmana yönlendirme — kullanıcı güveni, yanıta dayanma niyeti ve sorumlu yapay zekâ kullanımı algısı üzerindeki etkisini incelemeyi amaçlamaktadır. Bulgular, kurumsal bağlamlarda yapay zekâ asistan tasarımına yönelik önerilerin geliştirilmesine katkı sağlayacaktır.</p>
+        <br>
+        <p><strong>Gizlilik ve Veri Güvenliği:</strong> Toplanan veriler tamamen anonim olarak tutulacak ve yalnızca akademik analizler için kullanılacaktır. Katılım tamamen gönüllülük esasına dayanmaktadır.</p>
       </div>
 
       <div class="section-label">Ön Koşullar</div>
@@ -644,6 +645,12 @@ function renderConsent(el) {
       <div class="btn-row">
         <button class="btn btn-primary" onclick="submitConsent()">Devam Et →</button>
       </div>
+
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.8;">
+        <strong style="color:#444;">Araştırmacı:</strong> İlayda Demirtaş — <a href="mailto:ilaydmrts@hotmail.com" style="color:var(--accent);">ilaydmrts@hotmail.com</a><br>
+        <strong style="color:#444;">Danışman:</strong> Dr. Öğr. Üyesi İlkim Ecem Emre Sözeri — <a href="mailto:ecem.emre@marmara.edu.tr" style="color:var(--accent);">ecem.emre@marmara.edu.tr</a><br>
+        Marmara Üniversitesi · Yönetim Bilişim Sistemleri (Almanca) Bölümü
+      </div>
     </div>`;
   bindRadios();
 }
@@ -674,21 +681,23 @@ function renderScreenerOut() {
 }
 
 // ─────────────────────────────────────────────
-//  STEP 1 — Demografi
+//  STEP 7 — Demografi (en son)
 // ─────────────────────────────────────────────
 function renderDemografi(el) {
+  const saved = state.answers.demografi || {};
   el.innerHTML = `
     <div class="card">
-      <div class="step-chip"><span class="step-dot"></span> Adım 1 / 4</div>
+      <div class="step-chip"><span class="step-dot"></span> Son Adım</div>
       <div class="card-label">Demografik Bilgiler</div>
       <h2>Sizin Hakkınızda</h2>
 
       <div class="form-group">
-        <label class="form-label">Yaş aralığınız nedir? <span class="req">*</span></label>
+        <label class="form-label">Doğum yılınız nedir? <span class="req">*</span></label>
         <div class="select-wrap">
-          <select id="d_yas">
+          <select id="d_dogum_yili">
             <option value="">— Seçiniz —</option>
-            <option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55+</option>
+            ${Array.from({length: 2007 - 1940 + 1}, (_,i) => 2007 - i)
+              .map(y => `<option ${saved.d_dogum_yili == y ? 'selected' : ''}>${y}</option>`).join('')}
           </select>
         </div>
       </div>
@@ -707,8 +716,16 @@ function renderDemografi(el) {
         <div class="select-wrap">
           <select id="d_egitim">
             <option value="">— Seçiniz —</option>
-            <option>Lise</option><option>Ön lisans</option><option>Lisans</option><option>Yüksek lisans</option><option>Doktora</option><option>Diğer</option>
+            <option ${saved.d_egitim==='Lise'?'selected':''}>Lise</option>
+            <option ${saved.d_egitim==='Ön lisans'?'selected':''}>Ön lisans</option>
+            <option ${saved.d_egitim==='Lisans'?'selected':''}>Lisans</option>
+            <option ${saved.d_egitim==='Yüksek lisans'?'selected':''}>Yüksek lisans</option>
+            <option ${saved.d_egitim==='Doktora'?'selected':''}>Doktora</option>
+            <option value="Diğer" ${saved.d_egitim==='Diğer'||saved.d_egitim_diger?'selected':''}>Diğer</option>
           </select>
+        </div>
+        <div id="d_egitim_diger_wrap" style="margin-top:8px;display:${saved.d_egitim_diger?'block':'none'}">
+          <input type="text" id="d_egitim_diger" placeholder="Lütfen belirtin…" value="${saved.d_egitim_diger||''}">
         </div>
       </div>
 
@@ -717,8 +734,17 @@ function renderDemografi(el) {
         <div class="select-wrap">
           <select id="d_calisma">
             <option value="">— Seçiniz —</option>
-            <option>Tam zamanlı</option><option>Yarı zamanlı</option><option>Stajyer</option><option>Öğrenci</option><option>Serbest çalışan</option><option>Çalışmıyorum</option><option>Diğer</option>
+            <option ${saved.d_calisma==='Tam zamanlı'?'selected':''}>Tam zamanlı</option>
+            <option ${saved.d_calisma==='Yarı zamanlı'?'selected':''}>Yarı zamanlı</option>
+            <option ${saved.d_calisma==='Stajyer'?'selected':''}>Stajyer</option>
+            <option ${saved.d_calisma==='Öğrenci'?'selected':''}>Öğrenci</option>
+            <option ${saved.d_calisma==='Serbest çalışan'?'selected':''}>Serbest çalışan</option>
+            <option ${saved.d_calisma==='Çalışmıyorum'?'selected':''}>Çalışmıyorum</option>
+            <option value="Diğer" ${saved.d_calisma==='Diğer'||saved.d_calisma_diger?'selected':''}>Diğer</option>
           </select>
+        </div>
+        <div id="d_calisma_diger_wrap" style="margin-top:8px;display:${saved.d_calisma_diger?'block':'none'}">
+          <input type="text" id="d_calisma_diger" placeholder="Lütfen belirtin…" value="${saved.d_calisma_diger||''}">
         </div>
       </div>
 
@@ -727,7 +753,11 @@ function renderDemografi(el) {
         <div class="select-wrap">
           <select id="d_deneyim">
             <option value="">— Seçiniz —</option>
-            <option>1 yıldan az</option><option>1–3 yıl</option><option>4–7 yıl</option><option>8–12 yıl</option><option>13+ yıl</option>
+            <option ${saved.d_deneyim==='1 yıldan az'?'selected':''}>1 yıldan az</option>
+            <option ${saved.d_deneyim==='1–3 yıl'?'selected':''}>1–3 yıl</option>
+            <option ${saved.d_deneyim==='4–7 yıl'?'selected':''}>4–7 yıl</option>
+            <option ${saved.d_deneyim==='8–12 yıl'?'selected':''}>8–12 yıl</option>
+            <option ${saved.d_deneyim==='13+ yıl'?'selected':''}>13+ yıl</option>
           </select>
         </div>
       </div>
@@ -737,50 +767,70 @@ function renderDemografi(el) {
         <div class="select-wrap">
           <select id="d_sektor">
             <option value="">— Seçiniz —</option>
-            <option>Teknoloji</option><option>Finans</option><option>Perakende / FMCG</option><option>Üretim</option><option>Eğitim</option><option>Sağlık</option><option>Danışmanlık</option><option>Kamu</option><option>Diğer</option>
+            <option ${saved.d_sektor==='Teknoloji'?'selected':''}>Teknoloji</option>
+            <option ${saved.d_sektor==='Finans'?'selected':''}>Finans</option>
+            <option ${saved.d_sektor==='Perakende / FMCG'?'selected':''}>Perakende / FMCG</option>
+            <option ${saved.d_sektor==='Üretim'?'selected':''}>Üretim</option>
+            <option ${saved.d_sektor==='Eğitim'?'selected':''}>Eğitim</option>
+            <option ${saved.d_sektor==='Sağlık'?'selected':''}>Sağlık</option>
+            <option ${saved.d_sektor==='Danışmanlık'?'selected':''}>Danışmanlık</option>
+            <option ${saved.d_sektor==='Kamu'?'selected':''}>Kamu</option>
+            <option value="Diğer" ${saved.d_sektor==='Diğer'||saved.d_sektor_diger?'selected':''}>Diğer</option>
           </select>
+        </div>
+        <div id="d_sektor_diger_wrap" style="margin-top:8px;display:${saved.d_sektor_diger?'block':'none'}">
+          <input type="text" id="d_sektor_diger" placeholder="Lütfen belirtin…" value="${saved.d_sektor_diger||''}">
         </div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Bu ankete hangi kanal üzerinden ulaştınız? <span class="req">*</span></label>
-        <div class="select-wrap">
-          <select id="d_kanal">
-            <option value="">— Seçiniz —</option>
-            <option>Anadolu Grubu</option><option>TRAI ağı</option><option>LinkedIn</option><option>Üniversite / akademik kanal</option><option>Diğer</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="error-msg" id="errDemografi">Lütfen tüm alanları doldurun.</div>
+      <div class="error-msg" id="errDemografi">Lütfen zorunlu alanları doldurun.</div>
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="goBack()">← Geri</button>
-        <button class="btn btn-primary" onclick="submitDemografi()">Devam Et →</button>
+        <button class="btn btn-primary" onclick="submitDemografi()">Anketi Tamamla →</button>
       </div>
     </div>`;
+
   bindRadios();
-  // Restore
-  if (state.answers.demografi) {
-    const d = state.answers.demografi;
-    Object.keys(d).forEach(k => {
-      const el2 = document.getElementById(k);
-      if (el2 && el2.tagName === 'SELECT') el2.value = d[k];
+
+  // "Diğer" seçilince text input göster
+  ['d_egitim','d_calisma','d_sektor'].forEach(id => {
+    document.getElementById(id).addEventListener('change', function() {
+      const wrap = document.getElementById(id + '_diger_wrap');
+      if (wrap) wrap.style.display = this.value === 'Diğer' ? 'block' : 'none';
     });
+  });
+
+  // Restore cinsiyet
+  if (saved.d_cinsiyet) {
+    const radio = document.querySelector(`input[name="d_cinsiyet"][value="${saved.d_cinsiyet}"]`);
+    if (radio) { radio.checked = true; radio.closest('.radio-option').classList.add('selected'); }
   }
 }
 
 function submitDemografi() {
-  const fields = ['d_yas','d_egitim','d_calisma','d_deneyim','d_sektor','d_kanal'];
+  const yil = document.getElementById('d_dogum_yili').value;
   const cin = getRadioVal('d_cinsiyet');
-  const missing = fields.some(f => !document.getElementById(f).value) || !cin;
+  const egitim = document.getElementById('d_egitim').value;
+  const calisma = document.getElementById('d_calisma').value;
+  const deneyim = document.getElementById('d_deneyim').value;
+  const sektor = document.getElementById('d_sektor').value;
   const err = document.getElementById('errDemografi');
-  if (missing) { err.classList.add('show'); return; }
+
+  if (!yil || !cin || !egitim || !calisma || !deneyim || !sektor) {
+    err.classList.add('show'); return;
+  }
   err.classList.remove('show');
-  const d = {};
-  fields.forEach(f => d[f] = document.getElementById(f).value);
-  d.d_cinsiyet = cin;
+
+  const d = { d_dogum_yili: yil, d_cinsiyet: cin, d_egitim: egitim, d_calisma: calisma, d_deneyim: deneyim, d_sektor: sektor };
+
+  // "Diğer" text inputs — opsiyonel
+  ['egitim','calisma','sektor'].forEach(k => {
+    const inp = document.getElementById('d_' + k + '_diger');
+    if (inp) d['d_' + k + '_diger'] = inp.value.trim();
+  });
+
   state.answers.demografi = d;
-  state.step = 2; render();
+  submitSurvey();
 }
 
 // ─────────────────────────────────────────────
@@ -789,7 +839,7 @@ function submitDemografi() {
 function renderAiExp(el) {
   el.innerHTML = `
     <div class="card">
-      <div class="step-chip"><span class="step-dot"></span> Adım 2 / 4</div>
+      <div class="step-chip"><span class="step-dot"></span> Adım 1 / 3</div>
       <div class="card-label">YZ Kullanım Deneyimi</div>
       <h2>Yapay Zekâ ile Deneyiminiz</h2>
 
@@ -841,7 +891,7 @@ function submitAiExp() {
   if (!siklik || !seviye || !is) { err.classList.add('show'); return; }
   err.classList.remove('show');
   state.answers.aiExp = { ai_siklik: siklik, ai_seviye: seviye, ai_is: is };
-  state.step = 3; render();
+  state.step = 2; render();
 }
 
 // ─────────────────────────────────────────────
@@ -856,7 +906,7 @@ function renderAiLiteracy(el) {
 
   el.innerHTML = `
     <div class="card">
-      <div class="step-chip"><span class="step-dot"></span> Adım 3 / 4</div>
+      <div class="step-chip"><span class="step-dot"></span> Adım 2 / 3</div>
       <div class="card-label">YZ Okuryazarlığı Ölçeği</div>
       <h2>Yapay Zekâya İlişkin Görüşleriniz</h2>
       <div class="info-box">Aşağıdaki ifadeleri 1 (Kesinlikle Katılmıyorum) ile 7 (Kesinlikle Katılıyorum) arasında değerlendirin.</div>
@@ -896,7 +946,7 @@ function submitAiLiteracy() {
   if (missing) { err.classList.add('show'); return; }
   err.classList.remove('show');
   state.answers.aiLiteracy = vals;
-  state.step = 4; render();
+  state.step = 3; render();
 }
 
 // ─────────────────────────────────────────────
@@ -905,7 +955,7 @@ function submitAiLiteracy() {
 function renderScenarioIntro(el) {
   el.innerHTML = `
     <div class="card">
-      <div class="step-chip"><span class="step-dot"></span> Adım 4 / 4</div>
+      <div class="step-chip"><span class="step-dot"></span> Adım 3 / 3</div>
       <div class="card-label">Senaryo</div>
       <h2>Aşağıdaki Senaryoyu Okuyun</h2>
 
@@ -921,7 +971,7 @@ function renderScenarioIntro(el) {
 
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="goBack()">← Geri</button>
-        <button class="btn btn-primary" onclick="state.step=5;render()">Yanıtları Değerlendirmeye Başla →</button>
+        <button class="btn btn-primary" onclick="state.step=4;render()">Yanıtları Değerlendirmeye Başla →</button>
       </div>
     </div>`;
 }
@@ -1033,8 +1083,8 @@ function submitResponse(prefix, idx) {
   state.answers[prefix + '_likert'] = likertVals;
   state.answers[prefix + '_behavioral'] = behavioral;
 
-  if (idx < 2) { state.step = 6 + idx; render(); }
-  else { submitSurvey(); }
+  if (idx < 2) { state.step = 5 + idx; render(); }
+  else { state.step = 7; render(); }
 }
 
 // ─────────────────────────────────────────────
