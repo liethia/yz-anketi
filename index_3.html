@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kurumsal YZ Araştırması</title>
+  <style>
+    /* Offline-safe font stack — serif display + clean sans */
+    @font-face {
+      font-family: 'DisplaySerif';
+      src: local('Georgia'), local('Times New Roman');
+    }
+  </style>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F5F0;
+      --card: #FFFFFF;
+      --ink: #1A1A1A;
+      --muted: #6B6B6B;
+      --accent: #2D5BE3;
+      --accent-light: #EEF2FF;
+      --border: #E2DDD6;
+      --success: #16A34A;
+      --error: #DC2626;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 24px 16px 64px;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      text-align: center;
+      padding: 40px 0 32px;
+    }
+    .site-header .uni-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .site-header h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(22px, 4vw, 32px);
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .site-header p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      margin-bottom: 28px;
+    }
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width .4s ease;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .card h2 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .card p, .card li {
+      font-size: 15px;
+      line-height: 1.65;
+      color: #333;
+    }
+
+    .info-box {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: #1e3a8a;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    /* ── Scenario box ── */
+    .scenario-box {
+      background: #FAFAF8;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .scenario-box .scenario-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .scenario-box p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #444;
+    }
+    .scenario-box .question-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-top: 14px;
+      font-size: 14px;
+      font-style: italic;
+      color: #555;
+    }
+
+    /* ── Response box ── */
+    .response-box {
+      background: #F0F4FF;
+      border: 1px solid #C7D7FB;
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin-bottom: 24px;
+    }
+    .response-box .response-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .response-box p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: #1e3a8a;
+    }
+
+    /* ── Likert table ── */
+    .likert-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .likert-table thead tr {
+      background: #F7F5F0;
+    }
+    .likert-table thead th {
+      padding: 10px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .likert-table thead th:first-child {
+      text-align: left;
+      width: 44%;
+      padding-left: 0;
+    }
+    .likert-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    .likert-table tbody tr:last-child { border-bottom: none; }
+    .likert-table tbody tr:hover { background: #FAFAF8; }
+    .likert-table tbody td {
+      padding: 14px 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .likert-table tbody td:first-child {
+      text-align: left;
+      padding-left: 0;
+      color: #333;
+      line-height: 1.5;
+    }
+    .likert-table tbody td span.q-num {
+      color: var(--accent);
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    /* custom radio */
+    .likert-radio {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .likert-radio:checked {
+      border-color: var(--accent);
+      background: var(--accent);
+      box-shadow: inset 0 0 0 3px #fff;
+    }
+    .likert-radio:hover { border-color: var(--accent); }
+
+    /* ── Behavioral question ── */
+    .behavioral-q {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .behavioral-q .q-label {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+    .behavioral-q .q-label span { color: var(--accent); font-weight: 700; }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      font-size: 14px;
+    }
+    .radio-option:hover { border-color: var(--accent); background: var(--accent-light); }
+    .radio-option input[type="radio"] {
+      appearance: none;
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .2s, background .2s;
+    }
+    .radio-option input[type="radio"]:checked {
+      border-color: var(--accent);
+      background: var(--accent);
+      box-shadow: inset 0 0 0 3px #fff;
+    }
+    .radio-option.selected {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    /* ── Form elements ── */
+    .form-group { margin-bottom: 22px; }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .form-label .req { color: var(--error); margin-left: 3px; }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--card);
+      appearance: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    select:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(45,91,227,.12);
+    }
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .radio-group { display: flex; flex-direction: column; gap: 8px; }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 28px;
+    }
+    .btn {
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .2s, transform .1s;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--border); color: var(--ink); }
+
+    /* ── Validation error ── */
+    .error-msg {
+      color: var(--error);
+      font-size: 13px;
+      margin-top: 20px;
+      display: none;
+      padding: 10px 14px;
+      background: #FEF2F2;
+      border-radius: 8px;
+      border: 1px solid #FECACA;
+    }
+    .error-msg.show { display: block; }
+
+    /* ── Section divider label ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Consent ── */
+    .consent-box {
+      background: #FAFAF8;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    /* ── Thank you ── */
+    .thankyou {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .thankyou .icon { font-size: 56px; margin-bottom: 20px; }
+    .thankyou h2 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    .thankyou p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+    /* ── Screener out ── */
+    .screener-out {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .screener-out .icon { font-size: 48px; margin-bottom: 20px; }
+    .screener-out h2 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+    .screener-out p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+    /* ── Likert scale header labels ── */
+    .scale-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      padding: 0 4px;
+    }
+
+    /* ── Step indicator ── */
+    .step-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .step-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .card { padding: 22px 18px; }
+      .likert-table thead th { font-size: 10px; padding: 8px 4px; }
+      .likert-table tbody td { padding: 12px 4px; }
+      .likert-radio { width: 17px; height: 17px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header class="site-header">
+    <div class="uni-badge">🎓 Marmara Üniversitesi</div>
+    <h1>Kurumsal Yapay Zekâ Asistanlarında<br>Yanıt Davranışları Araştırması</h1>
+    <p>Akademik araştırma · Gönüllülük esaslı · Yaklaşık 8–12 dakika</p>
+  </header>
+
+  <div id="progressWrap" class="progress-wrap" style="display:none;">
+    <div class="progress-labels">
+      <span id="progressLabel">Adım 1</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <div id="surveyContainer"></div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  DATA
+// ─────────────────────────────────────────────
+const SCENARIO_TEXT = `Bir şirkette çalıştığınızı düşünün. Yöneticiniz sizden şirketiniz için bir uzaktan çalışma politikası taslağı hazırlamanızı istedi. Bu politika; çalışanların hangi koşullarda uzaktan çalışabileceğini, iletişim ve performans beklentilerini, ekipman kullanımını, veri güvenliği kurallarını ve gerekli onay süreçlerini içerecektir.`;
+
+const QUESTION_TO_AI = `"Uzaktan çalışma politikamızda hangi unsurlar yer almalıdır?"`;
+
+const AI_RESPONSES = {
+  A: {
+    text: 'Uzaktan çalışma politikanızda uygunluk kriterleri, çalışma saatleri, iletişim beklentileri, performans takibi, veri güvenliği kuralları, ekipman kullanımı ve onay süreci yer almalıdır. Politika, çalışanların erişilebilirlik beklentilerini ve uzaktan çalışma düzeninin nasıl uygulanacağını da açıkça belirtmelidir.'
+  },
+  B: {
+    text: 'Uzaktan çalışma politikanızda uygunluk kriterleri, çalışma saatleri, iletişim beklentileri, performans takibi, veri güvenliği kuralları, ekipman kullanımı ve onay süreci yer almalıdır. Ancak bu başlıklar şirketin çalışma modeli ve iç prosedürlerine göre değişebileceği için, bu yanıtı ilk taslak olarak kullanıp kurumunuza göre doğrulamanız uygun olur.'
+  },
+  C: {
+    text: 'Uzaktan çalışma politikasında uygunluk kriterleri, çalışma saatleri, iletişim beklentileri, performans takibi, veri güvenliği kuralları, ekipman kullanımı ve onay süreci ele alınabilir. Ancak şirket içi prosedürler ve hukuki gereklilikler değişebileceği için nihai metin yalnızca bu yapay zekâ yanıtına dayanılarak hazırlanmamalı; son hâlden önce İK ve/veya hukuk ekibiyle doğrulanmalıdır.'
+  }
+};
+
+const LIKERT_QUESTIONS = [
+  { code: 'T1',  group: 'Güven',          blockDesc: 'Aşağıdaki ifadeler, az önceki yanıtı veren yapay zekâ asistanına ne kadar güvendiğinizi ölçmektedir.', text: 'Bu yapay zekâ asistanına güven duyuyorum.' },
+  { code: 'T2',  group: 'Güven',          blockDesc: null, text: 'Bu yapay zekâ asistanını güvenilir buluyorum.' },
+  { code: 'T3',  group: 'Güven',          blockDesc: null, text: 'Bu yapay zekâ asistanına güvenebilirim.' },
+  { code: 'RI1', group: 'Dayanma Niyeti', blockDesc: 'Aşağıdaki ifadeler, az önceki yapay zekâ önerisini verilen görevde takip etme niyetinizi ölçmektedir.', text: 'Bu görevde yapay zekâ asistanının önerisini takip edeceğimi düşünüyorum.' },
+  { code: 'RI2', group: 'Dayanma Niyeti', blockDesc: null, text: 'Bu görevde yapay zekâ asistanının önerisini takip ederdim.' },
+  { code: 'RI3', group: 'Dayanma Niyeti', blockDesc: null, text: 'Bu durumda yapay zekâ asistanının önerisini takip etmek isterdim.' },
+  { code: 'H1',  group: 'Yardımcılık',    blockDesc: null, text: 'Bu yanıt, verilen görevi tamamlamamda bana yardımcı olurdu.' },
+  { code: 'E1',  group: 'Uzman Danışma',  blockDesc: null, text: 'Nihai karar vermeden önce bir İK veya hukuk uzmanına danışma ihtiyacı duyardım.' },
+  { code: 'RS1', group: 'Sorumlu Yaklaşım', blockDesc: null, text: 'Bu yanıt, sorumlu ve güvenli bir yaklaşım sergiliyor.' },
+];
+
+const BEHAVIORAL_OPTIONS = [
+  { value: '1', label: 'Yanıtı doğrudan kullanırdım.' },
+  { value: '2', label: 'Yanıtı küçük düzenlemelerle kullanırdım.' },
+  { value: '3', label: 'Yanıtı ancak ilgili bir uzmana danıştıktan sonra kullanırdım.' },
+  { value: '4', label: 'Yanıtı kullanmazdım.' },
+];
+
+const AI_LITERACY = [
+  { code: 'AIL1', text: 'Akıllı cihazlar ile akıllı olmayan cihazları birbirinden ayırt edebilirim.', reverse: false },
+  { code: 'AIL2', text: 'Yapay zekâ teknolojisinin bana nasıl yardımcı olacağını bilmiyorum.', reverse: true },
+  { code: 'AIL3', text: 'Kullandığım uygulama ve ürünlerde kullanılan yapay zekâ teknolojisini tanımlayabilirim.', reverse: false },
+  { code: 'AIL4', text: 'Günlük işlerimde bana yardımcı olması için yapay zekâ uygulamalarını ustalıkla kullanabilirim.', reverse: false },
+  { code: 'AIL5', text: 'Yeni bir yapay zekâ uygulamasını kullanmayı öğrenmek benim için genellikle zordur.', reverse: true },
+  { code: 'AIL6', text: 'İş verimliliğimi artırmak için yapay zekâ uygulamalarını kullanabilirim.', reverse: false },
+  { code: 'AIL7', text: 'Bir yapay zekâ uygulamasını bir süre kullandıktan sonra kapasitesini ve sınırlarını değerlendirebilirim.', reverse: false },
+  { code: 'AIL8', text: 'Belirli bir görev için çeşitli yapay zekâ uygulamaları arasından en uygun olanını seçebilirim.', reverse: false },
+  { code: 'AIL9', text: 'Yapay zekâ tarafından sunulan çeşitli çözümler arasından uygun olanını seçebilirim.', reverse: false },
+  { code: 'AIL10', text: 'Yapay zekâ uygulamalarını kullanırken her zaman etik ilkelere uyarım.', reverse: false },
+  { code: 'AIL11', text: 'Yapay zekâ uygulamalarını kullanırken gizlilik ve bilgi güvenliği konularına asla dikkat etmem.', reverse: true },
+  { code: 'AIL12', text: 'Yapay zekâ teknolojisinin kötü amaçlı kullanılmaması için her zaman dikkatliyimdir.', reverse: false },
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let state = {
+  step: 0,
+  responseOrder: [],   // shuffled ['A','B','C']
+  answers: {},
+  responseStep: 0,     // 0,1,2 → which response we're on
+};
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Steps: 0=consent, 1=demografi, 2=ai_exp, 3=ai_literacy, 4=scenario_intro, 5=response0, 6=response1, 7=response2, 8=thankyou
+const TOTAL_STEPS = 8;
+
+function updateProgress(step) {
+  const wrap = document.getElementById('progressWrap');
+  if (step === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const pct = Math.round((step / (TOTAL_STEPS - 1)) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  const labels = ['', 'Demografik Bilgiler', 'YZ Deneyimi', 'YZ Okuryazarlığı',
+    'Senaryo', 'Yanıt 1/3', 'Yanıt 2/3', 'Yanıt 3/3', 'Tamamlandı'];
+  document.getElementById('progressLabel').textContent = labels[step] || '';
+}
+
+function render() {
+  updateProgress(state.step);
+  const el = document.getElementById('surveyContainer');
+  el.innerHTML = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (state.step === 0) renderConsent(el);
+  else if (state.step === 1) renderDemografi(el);
+  else if (state.step === 2) renderAiExp(el);
+  else if (state.step === 3) renderAiLiteracy(el);
+  else if (state.step === 4) renderScenarioIntro(el);
+  else if (state.step >= 5 && state.step <= 7) renderResponse(el, state.step - 5);
+  else if (state.step === 8) renderThankyou(el);
+}
+
+// ─────────────────────────────────────────────
+//  STEP 0 — Onam & Filtre
+// ─────────────────────────────────────────────
+function renderConsent(el) {
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-label">Bilgilendirilmiş Onam</div>
+      <h2>Araştırmaya Hoş Geldiniz</h2>
+      <div class="consent-box">
+        <p>Bu araştırma, <strong>Marmara Üniversitesi</strong> bünyesinde yürütülen akademik bir çalışmadır. Araştırmanın amacı, kurumsal yapay zekâ asistanlarında farklı yanıt davranışlarının kullanıcı güveni ve kullanım niyeti üzerindeki etkisini incelemektir.</p>
+        <br>
+        <p>Katılımınız <strong>tamamen gönüllülük</strong> esasına dayanmaktadır. Yanıtlarınız anonim olarak işlenecek ve yalnızca bilimsel amaçlarla kullanılacaktır. Anketi istediğiniz zaman bırakabilirsiniz.</p>
+      </div>
+
+      <div class="section-label">Ön Koşullar</div>
+
+      <div class="form-group">
+        <label class="form-label">Araştırmaya gönüllü olarak katılmayı kabul ediyor musunuz? <span class="req">*</span></label>
+        <div class="radio-group" id="consent_q1">
+          ${radioOpt('consent_q1', 'evet', 'Evet, katılıyorum')}
+          ${radioOpt('consent_q1', 'hayir', 'Hayır')}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">18 yaşından büyük müsünüz? <span class="req">*</span></label>
+        <div class="radio-group" id="consent_q2">
+          ${radioOpt('consent_q2', 'evet', 'Evet')}
+          ${radioOpt('consent_q2', 'hayir', 'Hayır')}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">En az 1 yıl kurumsal çalışma veya staj deneyiminiz var mı? <span class="req">*</span></label>
+        <div class="radio-group" id="consent_q3">
+          ${radioOpt('consent_q3', 'evet', 'Evet')}
+          ${radioOpt('consent_q3', 'hayir', 'Hayır')}
+        </div>
+      </div>
+
+      <div class="error-msg" id="errConsent">Lütfen tüm soruları yanıtlayın.</div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="submitConsent()">Devam Et →</button>
+      </div>
+    </div>`;
+  bindRadios();
+}
+
+function submitConsent() {
+  const q1 = getRadioVal('consent_q1');
+  const q2 = getRadioVal('consent_q2');
+  const q3 = getRadioVal('consent_q3');
+  const err = document.getElementById('errConsent');
+  if (!q1 || !q2 || !q3) { err.classList.add('show'); return; }
+  err.classList.remove('show');
+  if (q1 === 'hayir' || q2 === 'hayir' || q3 === 'hayir') {
+    renderScreenerOut(); return;
+  }
+  state.answers.consent = { q1, q2, q3 };
+  state.responseOrder = shuffle(['A', 'B', 'C']);
+  state.step = 1; render();
+}
+
+function renderScreenerOut() {
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('surveyContainer').innerHTML = `
+    <div class="card screener-out">
+      <div class="icon">🙏</div>
+      <h2>Teşekkür Ederiz</h2>
+      <p>Ne yazık ki bu araştırma belirli katılımcı kriterlerini gerektirmektedir. Zaman ayırdığınız için çok teşekkür ederiz.</p>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────
+//  STEP 1 — Demografi
+// ─────────────────────────────────────────────
+function renderDemografi(el) {
+  el.innerHTML = `
+    <div class="card">
+      <div class="step-chip"><span class="step-dot"></span> Adım 1 / 4</div>
+      <div class="card-label">Demografik Bilgiler</div>
+      <h2>Sizin Hakkınızda</h2>
+
+      <div class="form-group">
+        <label class="form-label">Yaş aralığınız nedir? <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="d_yas">
+            <option value="">— Seçiniz —</option>
+            <option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55+</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Cinsiyetiniz nedir? <span class="req">*</span></label>
+        <div class="radio-group" id="d_cinsiyet">
+          ${radioOpt('d_cinsiyet','kadin','Kadın')}
+          ${radioOpt('d_cinsiyet','erkek','Erkek')}
+          ${radioOpt('d_cinsiyet','diger','Belirtmek istemiyorum')}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Eğitim düzeyiniz nedir? <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="d_egitim">
+            <option value="">— Seçiniz —</option>
+            <option>Lise</option><option>Ön lisans</option><option>Lisans</option><option>Yüksek lisans</option><option>Doktora</option><option>Diğer</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Mevcut çalışma durumunuz nedir? <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="d_calisma">
+            <option value="">— Seçiniz —</option>
+            <option>Tam zamanlı</option><option>Yarı zamanlı</option><option>Stajyer</option><option>Öğrenci</option><option>Serbest çalışan</option><option>Çalışmıyorum</option><option>Diğer</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Toplam kurumsal çalışma/staj deneyiminiz kaç yıldır? <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="d_deneyim">
+            <option value="">— Seçiniz —</option>
+            <option>1 yıldan az</option><option>1–3 yıl</option><option>4–7 yıl</option><option>8–12 yıl</option><option>13+ yıl</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Çalıştığınız veya deneyim sahibi olduğunuz sektör hangisidir? <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="d_sektor">
+            <option value="">— Seçiniz —</option>
+            <option>Teknoloji</option><option>Finans</option><option>Perakende / FMCG</option><option>Üretim</option><option>Eğitim</option><option>Sağlık</option><option>Danışmanlık</option><option>Kamu</option><option>Diğer</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Bu ankete hangi kanal üzerinden ulaştınız? <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="d_kanal">
+            <option value="">— Seçiniz —</option>
+            <option>Anadolu Grubu</option><option>TRAI ağı</option><option>LinkedIn</option><option>Üniversite / akademik kanal</option><option>Diğer</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="error-msg" id="errDemografi">Lütfen tüm alanları doldurun.</div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goBack()">← Geri</button>
+        <button class="btn btn-primary" onclick="submitDemografi()">Devam Et →</button>
+      </div>
+    </div>`;
+  bindRadios();
+  // Restore
+  if (state.answers.demografi) {
+    const d = state.answers.demografi;
+    Object.keys(d).forEach(k => {
+      const el2 = document.getElementById(k);
+      if (el2 && el2.tagName === 'SELECT') el2.value = d[k];
+    });
+  }
+}
+
+function submitDemografi() {
+  const fields = ['d_yas','d_egitim','d_calisma','d_deneyim','d_sektor','d_kanal'];
+  const cin = getRadioVal('d_cinsiyet');
+  const missing = fields.some(f => !document.getElementById(f).value) || !cin;
+  const err = document.getElementById('errDemografi');
+  if (missing) { err.classList.add('show'); return; }
+  err.classList.remove('show');
+  const d = {};
+  fields.forEach(f => d[f] = document.getElementById(f).value);
+  d.d_cinsiyet = cin;
+  state.answers.demografi = d;
+  state.step = 2; render();
+}
+
+// ─────────────────────────────────────────────
+//  STEP 2 — YZ Deneyimi
+// ─────────────────────────────────────────────
+function renderAiExp(el) {
+  el.innerHTML = `
+    <div class="card">
+      <div class="step-chip"><span class="step-dot"></span> Adım 2 / 4</div>
+      <div class="card-label">YZ Kullanım Deneyimi</div>
+      <h2>Yapay Zekâ ile Deneyiminiz</h2>
+
+      <div class="form-group">
+        <label class="form-label">İş, staj veya okul bağlamında ChatGPT, Copilot, Gemini veya benzeri YZ araçlarını ne sıklıkla kullanıyorsunuz? <span class="req">*</span></label>
+        <div class="select-wrap">
+          <select id="ai_siklik">
+            <option value="">— Seçiniz —</option>
+            <option>Hiç</option><option>Nadiren</option><option>Ayda birkaç kez</option><option>Haftada birkaç kez</option><option>Her gün</option><option>Günde birden fazla kez</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">YZ araçlarıyla genel deneyim düzeyinizi nasıl değerlendirirsiniz? <span class="req">*</span><br>
+        <small style="color:var(--muted);font-weight:400">1 = Çok düşük &nbsp;·&nbsp; 7 = Çok yüksek</small></label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;" id="ai_seviye_group">
+          ${[1,2,3,4,5,6,7].map(n => `
+            <label style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="ai_seviye" value="${n}" class="likert-radio" style="width:22px;height:22px;">
+              <span style="font-size:12px;color:var(--muted)">${n}</span>
+            </label>`).join('')}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Daha önce YZ araçlarını iş amaçlı metin, rapor, karar desteği veya politika taslağı hazırlamak için kullandınız mı? <span class="req">*</span></label>
+        <div class="radio-group" id="ai_is">
+          ${radioOpt('ai_is','evet','Evet')}
+          ${radioOpt('ai_is','hayir','Hayır')}
+          ${radioOpt('ai_is','emin_degil','Emin değilim')}
+        </div>
+      </div>
+
+      <div class="error-msg" id="errAiExp">Lütfen tüm soruları yanıtlayın.</div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goBack()">← Geri</button>
+        <button class="btn btn-primary" onclick="submitAiExp()">Devam Et →</button>
+      </div>
+    </div>`;
+  bindRadios();
+}
+
+function submitAiExp() {
+  const siklik = document.getElementById('ai_siklik').value;
+  const seviye = getRadioVal('ai_seviye');
+  const is = getRadioVal('ai_is');
+  const err = document.getElementById('errAiExp');
+  if (!siklik || !seviye || !is) { err.classList.add('show'); return; }
+  err.classList.remove('show');
+  state.answers.aiExp = { ai_siklik: siklik, ai_seviye: seviye, ai_is: is };
+  state.step = 3; render();
+}
+
+// ─────────────────────────────────────────────
+//  STEP 3 — YZ Okuryazarlığı
+// ─────────────────────────────────────────────
+function renderAiLiteracy(el) {
+  const rows = AI_LITERACY.map((q, i) => `
+    <tr>
+      <td><span class="q-num">${i+1}.</span>${q.text}${q.reverse ? ' <em style="color:var(--muted);font-size:12px">(R)</em>' : ''}</td>
+      ${[1,2,3,4,5,6,7].map(n => `<td><input type="radio" class="likert-radio" name="AIL_${q.code}" value="${n}"></td>`).join('')}
+    </tr>`).join('');
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="step-chip"><span class="step-dot"></span> Adım 3 / 4</div>
+      <div class="card-label">YZ Okuryazarlığı Ölçeği</div>
+      <h2>Yapay Zekâya İlişkin Görüşleriniz</h2>
+      <div class="info-box">Aşağıdaki ifadeleri 1 (Kesinlikle Katılmıyorum) ile 7 (Kesinlikle Katılıyorum) arasında değerlendirin.</div>
+
+      <div style="overflow-x:auto;">
+        <table class="likert-table">
+          <thead>
+            <tr>
+              <th style="text-align:left">İfade</th>
+              <th>1<br><span style="font-weight:400;font-size:10px">Kes.<br>Katıl.</span></th>
+              <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+              <th>7<br><span style="font-weight:400;font-size:10px">Kes.<br>Katıl.</span></th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+
+      <div class="error-msg" id="errAiliteracy">Lütfen tüm ifadeleri değerlendirin.</div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goBack()">← Geri</button>
+        <button class="btn btn-primary" onclick="submitAiLiteracy()">Devam Et →</button>
+      </div>
+    </div>`;
+  bindRadios();
+}
+
+function submitAiLiteracy() {
+  const vals = {};
+  let missing = false;
+  AI_LITERACY.forEach(q => {
+    const v = getRadioVal('AIL_' + q.code);
+    if (!v) missing = true;
+    vals['AIL_' + q.code] = v;
+  });
+  const err = document.getElementById('errAiliteracy');
+  if (missing) { err.classList.add('show'); return; }
+  err.classList.remove('show');
+  state.answers.aiLiteracy = vals;
+  state.step = 4; render();
+}
+
+// ─────────────────────────────────────────────
+//  STEP 4 — Senaryo Tanıtımı
+// ─────────────────────────────────────────────
+function renderScenarioIntro(el) {
+  el.innerHTML = `
+    <div class="card">
+      <div class="step-chip"><span class="step-dot"></span> Adım 4 / 4</div>
+      <div class="card-label">Senaryo</div>
+      <h2>Aşağıdaki Senaryoyu Okuyun</h2>
+
+      <div class="scenario-box">
+        <div class="scenario-title">📋 Bağlam</div>
+        <p>${SCENARIO_TEXT}</p>
+        <div class="question-box">Bu konuda ilk taslağı oluşturmak için şirketinizin yapay zekâ asistanına şu soruyu sordunuz:<br><br>${QUESTION_TO_AI}</div>
+      </div>
+
+      <div class="info-box">
+        Sıradaki sayfalarda bu soruya verilen <strong>3 farklı yapay zekâ yanıtı</strong> göreceksiniz. Her yanıtı dikkatlice okuyun ve ardından gelen soruları yanıtlayın.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goBack()">← Geri</button>
+        <button class="btn btn-primary" onclick="state.step=5;render()">Yanıtları Değerlendirmeye Başla →</button>
+      </div>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────
+//  STEP 5-7 — Yanıt Değerlendirme
+// ─────────────────────────────────────────────
+function renderResponse(el, idx) {
+  const key = state.responseOrder[idx];
+  const resp = AI_RESPONSES[key];
+  const prefix = key;
+  const ordinalLabel = ['Birinci', 'İkinci', 'Üçüncü'][idx];
+
+  const rows = LIKERT_QUESTIONS.map((q, i) => {
+    const descRow = q.blockDesc ? `
+      <tr>
+        <td colspan="8" style="padding: 18px 0 6px; border-bottom: none;">
+          <div style="background:#F0F4FF;border-left:3px solid var(--accent);border-radius:6px;padding:10px 14px;font-size:13px;color:#1e3a8a;line-height:1.55;">${q.blockDesc}</div>
+        </td>
+      </tr>` : '';
+    const saved = state.answers[prefix + '_likert'] && state.answers[prefix + '_likert'][prefix + '_' + q.code];
+    return descRow + `
+    <tr>
+      <td><span class="q-num">${i+1}.</span>${q.text}</td>
+      ${[1,2,3,4,5,6,7].map(n => {
+        const chk = saved == n ? 'checked' : '';
+        return `<td><input type="radio" class="likert-radio" name="${prefix}_${q.code}" value="${n}" ${chk}></td>`;
+      }).join('')}
+    </tr>`;
+  }).join('');
+
+  const behavOptions = BEHAVIORAL_OPTIONS.map(opt => {
+    const saved = state.answers[prefix + '_behavioral'];
+    const sel = saved === opt.value ? 'selected' : '';
+    return `
+      <label class="radio-option ${sel}" onclick="selectBehavioral(this,'${prefix}_B1','${opt.value}')">
+        <input type="radio" name="${prefix}_B1" value="${opt.value}" ${saved===opt.value?'checked':''}>
+        ${opt.label}
+      </label>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="step-chip"><span class="step-dot"></span> ${ordinalLabel} Yanıt</div>
+      <div class="card-label">Yanıt ${idx+1} / 3</div>
+      <h2>Yapay Zekâ Asistanının Yanıtını Değerlendirin</h2>
+
+      <div class="scenario-box" style="margin-bottom:12px;">
+        <div class="scenario-title">📋 Hatırlatma — Sorulan soru</div>
+        <p style="font-style:italic;color:#555;">${QUESTION_TO_AI}</p>
+      </div>
+
+      <div class="response-box">
+        <div class="response-tag">🤖 Yapay Zekâ Yanıtı</div>
+        <p>${resp.text}</p>
+      </div>
+
+      <div class="section-label">Değerlendirme — 1: Kesinlikle Katılmıyorum · 7: Kesinlikle Katılıyorum</div>
+
+      <div style="overflow-x:auto;">
+        <table class="likert-table">
+          <thead>
+            <tr>
+              <th style="text-align:left">İfade</th>
+              <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+
+      <div class="behavioral-q">
+        <div class="q-label"><span>B1.</span> Bu yanıtı aldıktan sonra en olası davranışınız ne olurdu?</div>
+        ${behavOptions}
+      </div>
+
+      <div class="error-msg" id="errResponse">Lütfen tüm soruları yanıtlayın.</div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goBack()">← Geri</button>
+        <button class="btn btn-primary" onclick="submitResponse('${prefix}', ${idx})">${idx < 2 ? 'Sonraki Yanıt →' : 'Anketi Tamamla →'}</button>
+      </div>
+    </div>`;
+  bindRadios();
+}
+
+function selectBehavioral(labelEl, name, value) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => {
+    r.closest('.radio-option').classList.remove('selected');
+  });
+  labelEl.classList.add('selected');
+  labelEl.querySelector('input').checked = true;
+}
+
+function submitResponse(prefix, idx) {
+  const likertVals = {};
+  let missing = false;
+  LIKERT_QUESTIONS.forEach(q => {
+    const v = getRadioVal(prefix + '_' + q.code);
+    if (!v) missing = true;
+    likertVals[prefix + '_' + q.code] = v;
+  });
+  const behavioral = getRadioVal(prefix + '_B1');
+  if (!behavioral) missing = true;
+
+  const err = document.getElementById('errResponse');
+  if (missing) { err.classList.add('show'); return; }
+  err.classList.remove('show');
+
+  state.answers[prefix + '_likert'] = likertVals;
+  state.answers[prefix + '_behavioral'] = behavioral;
+
+  if (idx < 2) { state.step = 6 + idx; render(); }
+  else { submitSurvey(); }
+}
+
+// ─────────────────────────────────────────────
+//  SUBMIT
+// ─────────────────────────────────────────────
+async function submitSurvey() {
+  state.step = 8;
+  render();
+
+  // Build flat row for Google Sheets
+  const row = buildRow();
+  const SHEETS_URL = window.GOOGLE_SHEETS_URL || '';
+  if (SHEETS_URL) {
+    try {
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(row)
+      });
+    } catch (e) { console.warn('Sheets error:', e); }
+  } else {
+    console.log('Survey data:', JSON.stringify(row, null, 2));
+  }
+}
+
+function buildRow() {
+  const ts = new Date().toISOString();
+  const order = state.responseOrder.join('-');
+  const d = state.answers.demografi || {};
+  const exp = state.answers.aiExp || {};
+  const ail = state.answers.aiLiteracy || {};
+
+  let row = { timestamp: ts, response_order: order };
+
+  // Demografi
+  Object.assign(row, d);
+  // AI exp
+  Object.assign(row, exp);
+  // AI literacy
+  Object.assign(row, ail);
+
+  // Responses — stored in original order (A, B, C)
+  ['A', 'B', 'C'].forEach(key => {
+    const likert = state.answers[key + '_likert'] || {};
+    Object.assign(row, likert);
+    row[key + '_B1'] = state.answers[key + '_behavioral'] || '';
+    row[key + '_position'] = state.responseOrder.indexOf(key) + 1;
+  });
+
+  return row;
+}
+
+// ─────────────────────────────────────────────
+//  THANK YOU
+// ─────────────────────────────────────────────
+function renderThankyou(el) {
+  el.innerHTML = `
+    <div class="card thankyou">
+      <div class="icon">🎉</div>
+      <h2>Teşekkür Ederiz!</h2>
+      <p>Yanıtlarınız başarıyla kaydedildi. Araştırmamıza katkıda bulunduğunuz için çok teşekkür ederiz.<br><br>
+      Sorularınız için: <strong>marmara.edu.tr</strong></p>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────────────
+function goBack() {
+  if (state.step > 0) { state.step--; render(); }
+}
+
+function radioOpt(name, value, label) {
+  return `<label class="radio-option" onclick="selectRadioOption(this,'${name}')">
+    <input type="radio" name="${name}" value="${value}">
+    ${label}
+  </label>`;
+}
+
+function selectRadioOption(labelEl, name) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => {
+    r.closest('.radio-option').classList.remove('selected');
+  });
+  labelEl.classList.add('selected');
+  labelEl.querySelector('input').checked = true;
+}
+
+function getRadioVal(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : null;
+}
+
+function bindRadios() {
+  document.querySelectorAll('.radio-option input[type="radio"]').forEach(input => {
+    input.addEventListener('change', function() {
+      const name = this.name;
+      document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+        r.closest('.radio-option').classList.remove('selected');
+      });
+      this.closest('.radio-option').classList.add('selected');
+    });
+  });
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
