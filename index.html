@@ -202,22 +202,30 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 13.5px;
+      table-layout: fixed;
     }
     .likert-table thead tr {
       background: #F7F5F0;
     }
     .likert-table thead th {
-      padding: 10px 8px;
-      font-size: 11px;
+      padding: 10px 2px;
+      font-size: 10px;
       font-weight: 600;
       color: var(--muted);
       text-align: center;
       border-bottom: 1px solid var(--border);
+      width: 7%;
+      word-break: keep-all;
+      line-height: 1.2;
     }
     .likert-table thead th:first-child {
       text-align: left;
       width: 44%;
       padding-left: 0;
+    }
+    .likert-table thead th:nth-child(2),
+    .likert-table thead th:last-child {
+      width: 9%;
     }
     .likert-table tbody tr {
       border-bottom: 1px solid var(--border);
@@ -226,7 +234,7 @@
     .likert-table tbody tr:last-child { border-bottom: none; }
     .likert-table tbody tr:hover { background: #FAFAF8; }
     .likert-table tbody td {
-      padding: 14px 8px;
+      padding: 14px 2px;
       text-align: center;
       vertical-align: middle;
     }
@@ -471,9 +479,9 @@
     /* Responsive */
     @media (max-width: 600px) {
       .card { padding: 22px 18px; }
-      .likert-table thead th { font-size: 10px; padding: 8px 4px; }
-      .likert-table tbody td { padding: 12px 4px; }
-      .likert-radio { width: 17px; height: 17px; }
+      .likert-table thead th { font-size: 9px; padding: 8px 1px; }
+      .likert-table tbody td { padding: 12px 1px; }
+      .likert-radio { width: 18px; height: 18px; }
     }
   </style>
 </head>
