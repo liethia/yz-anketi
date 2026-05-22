@@ -821,7 +821,7 @@ function submitDemografi() {
   }
   err.classList.remove('show');
 
-  const d = { d_dogum_yili: yil, d_cinsiyet: cin, d_egitim: egitim, d_calisma: calisma, d_deneyim: deneyim, d_sektor: sektor };
+  const d = { d_dogum_yili: String(yil), d_cinsiyet: cin, d_egitim: egitim, d_calisma: calisma, d_deneyim: deneyim, d_sektor: sektor };
 
   // "Diğer" text inputs — opsiyonel
   ['egitim','calisma','sektor'].forEach(k => {
