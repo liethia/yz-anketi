@@ -482,7 +482,7 @@
 
   <header class="site-header">
     <h1>Kurumsal Yapay Zekâ Asistanlarında<br>Yanıt Davranışları Araştırması</h1>
-    <p>Akademik araştırma · Gönüllülük esaslı · Yaklaşık 8–12 dakika</p>
+    <p>Akademik araştırma · Gönüllülük esaslı · Yaklaşık 5–8 dakika</p>
   </header>
 
   <div id="progressWrap" class="progress-wrap" style="display:none;">
@@ -576,7 +576,7 @@ function updateProgress(step) {
   const wrap = document.getElementById('progressWrap');
   if (step === 0) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-  const pct = Math.round((step / (TOTAL_STEPS - 1)) * 100);
+  const pct = Math.min(100, Math.round((step / 7) * 100));
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressPct').textContent = pct + '%';
   const labels = ['', 'YZ Deneyimi', 'YZ Okuryazarlığı', 'Senaryo',
@@ -881,6 +881,18 @@ function renderAiExp(el) {
       </div>
     </div>`;
   bindRadios();
+
+  // Restore saved aiExp answers
+  const saved = state.answers.aiExp || {};
+  if (saved.ai_siklik) document.getElementById('ai_siklik').value = saved.ai_siklik;
+  if (saved.ai_seviye) {
+    const r = document.querySelector(`input[name="ai_seviye"][value="${saved.ai_seviye}"]`);
+    if (r) r.checked = true;
+  }
+  if (saved.ai_is) {
+    const r = document.querySelector(`input[name="ai_is"][value="${saved.ai_is}"]`);
+    if (r) { r.checked = true; r.closest('.radio-option').classList.add('selected'); }
+  }
 }
 
 function submitAiExp() {
@@ -900,7 +912,7 @@ function submitAiExp() {
 function renderAiLiteracy(el) {
   const rows = AI_LITERACY.map((q, i) => `
     <tr>
-      <td><span class="q-num">${i+1}.</span>${q.text}${q.reverse ? ' <em style="color:var(--muted);font-size:12px">(R)</em>' : ''}</td>
+      <td><span class="q-num">${i+1}.</span>${q.text}</td>
       ${[1,2,3,4,5,6,7].map(n => `<td><input type="radio" class="likert-radio" name="AIL_${q.code}" value="${n}"></td>`).join('')}
     </tr>`).join('');
 
@@ -916,9 +928,9 @@ function renderAiLiteracy(el) {
           <thead>
             <tr>
               <th style="text-align:left">İfade</th>
-              <th>1<br><span style="font-weight:400;font-size:10px">Kes.<br>Katıl.</span></th>
+              <th>1<br><span style="font-weight:400;font-size:10px">Kes.<br>Katılmıyorum</span></th>
               <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
-              <th>7<br><span style="font-weight:400;font-size:10px">Kes.<br>Katıl.</span></th>
+              <th>7<br><span style="font-weight:400;font-size:10px">Kes.<br>Katılıyorum</span></th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>
@@ -932,6 +944,16 @@ function renderAiLiteracy(el) {
       </div>
     </div>`;
   bindRadios();
+
+  // Restore saved aiLiteracy answers
+  const savedLit = state.answers.aiLiteracy || {};
+  AI_LITERACY.forEach(q => {
+    const v = savedLit['AIL_' + q.code];
+    if (v) {
+      const r = document.querySelector(`input[name="AIL_${q.code}"][value="${v}"]`);
+      if (r) r.checked = true;
+    }
+  });
 }
 
 function submitAiLiteracy() {
@@ -1036,7 +1058,9 @@ function renderResponse(el, idx) {
           <thead>
             <tr>
               <th style="text-align:left">İfade</th>
-              <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th>
+              <th>1<br><span style="font-weight:400;font-size:10px">Kes.<br>Katılmıyorum</span></th>
+              <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+              <th>7<br><span style="font-weight:400;font-size:10px">Kes.<br>Katılıyorum</span></th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>
@@ -1145,7 +1169,7 @@ function renderThankyou(el) {
       <div class="icon">🎉</div>
       <h2>Teşekkür Ederiz!</h2>
       <p>Yanıtlarınız başarıyla kaydedildi. Araştırmamıza katkıda bulunduğunuz için çok teşekkür ederiz.<br><br>
-      Sorularınız için: <strong>marmara.edu.tr</strong></p>
+      Sorularınız için: <a href="mailto:ilaydmrts@hotmail.com" style="color:var(--accent);">ilaydmrts@hotmail.com</a></p>
     </div>`;
 }
 
